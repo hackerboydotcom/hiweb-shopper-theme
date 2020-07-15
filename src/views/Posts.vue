@@ -101,9 +101,9 @@ export default {
         return;
       }
 
-      // +1 to post
+      // +1 to page
       let query = JSON.parse(JSON.stringify(this.$route.query));
-      query.post = parseInt(this.post) + 1;
+      query.page = parseInt(this.page) + 1;
       this.$router.replace({
         query
       });

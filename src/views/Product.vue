@@ -43,7 +43,7 @@
       <div class="mt-5 pt-5">
         <Description />
       </div>
-      
+
     </template>
 
   </div>
