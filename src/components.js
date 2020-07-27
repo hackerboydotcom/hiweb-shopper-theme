@@ -19,3 +19,7 @@ Vue.component('error-alert', ErrorAlert);
 // Pagination
 import Pagination from '@/components/Pagination';
 Vue.component('pagination', Pagination);
+
+// Test component
+import Test from '@/components/Test';
+Vue.component('test', Test);

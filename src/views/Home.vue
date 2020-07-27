@@ -8,6 +8,10 @@
       </div>
     </div>
 
+    <div v-html="$themeConfig.getConfigValue('home-wysiwyg')" :style="'color: ' + $themeConfig.getConfigValue('home-color')"></div>
+
+    <hiweb-theme-block block="home-test" />
+
   </div>
 </template>
 

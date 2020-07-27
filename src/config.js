@@ -20,6 +20,38 @@ themeConfig.section('Home page', 'home', section => {
   // Heading text
   section.config('home-heading-text').setLabel('Home heading text').setDriver('text-input').default('Hello world');
 
+  // Test wysiwyg
+  section.config('home-wysiwyg').setLabel('Test WYSIWYG').setDriver('wysiwyg-input').default('Hello world...');
+
+  // Color
+  section.config('home-color').setLabel('Test color').setDriver('color-input').default('red');
+
+  // Register a block
+  section.block('home-test', 'Test block', block => {
+
+    // Register a component
+    block.register('test', component => {
+
+      // Set a config
+      component.config('test').setLabel('Test block config').setDriver('text-input').default('Test block config value');
+
+    });
+
+    // Set default data
+    block.setDefaultData([
+      {
+        component: 'test',
+        config: [
+          {
+            handle: 'test',
+            value: 'Test config value'
+          }
+        ]
+      }
+    ]);
+
+  });
+
 });
 
 // Collections page config
@@ -132,3 +164,9 @@ themeConfig.section('Footer', null, section => {
   ]);
 
 });
+
+// Publish config data
+themeConfig.publish();
+
+// Log data
+console.log(themeConfig.toJson());

@@ -40,5 +40,6 @@ import CartModal from '@/components/CartModal';
 export default {
 
   components: { Navbar, Footer, CartModal }
+  
 }
 </script>

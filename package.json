@@ -11,7 +11,7 @@
     "bootstrap": "^4.5.0",
     "core-js": "^3.6.4",
     "flickity": "^2.2.1",
-    "hiweb-theme-sdk": "^0.0.1",
+    "hiweb-theme-sdk": "file:../../hiweb-packages/hiweb-theme-sdk",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
