@@ -17,6 +17,9 @@
       <img :src="$image.url(image)" />
     </template>
 
+    <h2>Example products:</h2>
+    {{ $themeConfig.getConfigValue('home-products') }}
+
   </div>
 </template>
 

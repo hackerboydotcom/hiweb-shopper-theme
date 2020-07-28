@@ -34,6 +34,11 @@ themeConfig.section('Home page', 'home', section => {
     }
   ]);
 
+  // Products
+  section.config('home-products').setLabel('Example products').setDriver('product-selector').default([
+    'product-id-1', 'product-id-2'
+  ]);
+
   // Register a block
   section.block('home-test', 'Test block', block => {
 
