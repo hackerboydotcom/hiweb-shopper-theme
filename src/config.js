@@ -26,6 +26,14 @@ themeConfig.section('Home page', 'home', section => {
   // Color
   section.config('home-color').setLabel('Test color').setDriver('color-input').default('red');
 
+  // Images
+  section.config('home-images').setLabel('Example Images').setDriver('image-selector').default([
+    {
+      url: 'https://hiweb-test.s3-ap-southeast-1.amazonaws.com/',
+      path: 'websites/539bf2fc-7566-4163-9ecb-8d015359ee7a/1589431061d27430999c-5f1e80bd75961.jpeg'
+    }
+  ]);
+
   // Register a block
   section.block('home-test', 'Test block', block => {
 

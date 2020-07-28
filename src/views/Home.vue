@@ -12,6 +12,11 @@
 
     <hiweb-theme-block block="home-test" />
 
+    <h2>Example images:</h2>
+    <template v-for="image in $themeConfig.getConfigValue('home-images')">
+      <img :src="$image.url(image)" />
+    </template>
+
   </div>
 </template>
 
