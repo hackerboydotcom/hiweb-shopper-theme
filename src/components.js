@@ -20,6 +20,10 @@ Vue.component('error-alert', ErrorAlert);
 import Pagination from '@/components/Pagination';
 Vue.component('pagination', Pagination);
 
-// Test component
-import Test from '@/components/Test';
-Vue.component('test', Test);
+// Home hero image component
+import HeroImage from '@/components/HeroImage';
+Vue.component('hero-image', HeroImage);
+
+// Featured products
+import FeaturedProducts from '@/components/FeaturedProducts';
+Vue.component('featured-products', FeaturedProducts);
