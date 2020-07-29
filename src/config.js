@@ -43,10 +43,18 @@ themeConfig.section('Home page', 'home', section => {
   section.block('home-test', 'Test block', block => {
 
     // Register a component
-    block.register('test', component => {
+    block.register('test', 'Test component', component => {
 
       // Set a config
       component.config('test').setLabel('Test block config').setDriver('text-input').default('Test block config value');
+
+    });
+
+    // Register a component
+    block.register('test', 'Test component 2', component => {
+
+      // Set a config
+      component.config('test').setLabel('Block config').setDriver('textarea-input').default('Hello world!!!');
 
     });
 
@@ -180,6 +188,3 @@ themeConfig.section('Footer', null, section => {
 
 // Publish config data
 themeConfig.publish();
-
-// Log data
-console.log(themeConfig.toJson());
