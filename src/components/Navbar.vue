@@ -21,10 +21,10 @@
           <li v-for="menuLink in $themeConfig.getConfigValue('top-menu')" class="nav-item dropdown">
 
             <!-- Toggle -->
-            <a class="nav-link" data-toggle="dropdown" :href="menuLink.url">{{ menuLink.text }}</a>
+            <a class="nav-link" :data-toggle="menuLink.children && menuLink.children.length ? 'dropdown' : ''" :href="menuLink.url">{{ menuLink.text }}</a>
 
             <!-- Menu -->
-            <div v-if="menuLink.children" class="dropdown-menu">
+            <div v-if="menuLink.children && menuLink.children.length" class="dropdown-menu">
               <div class="card card-lg">
                 <div class="card-body">
                   <ul class="list-styled font-size-sm">
