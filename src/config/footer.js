@@ -3,7 +3,7 @@ import themeConfig from 'hiweb-theme-sdk/config';
 themeConfig.section('Footer', null, section => {
 
   // Brand text
-  section.config('footer-brand-text').setLabel('Footer brand text').setDriver('text-input').default('Hiweb.');
+  section.config('footer-brand-text').setLabel('Footer brand text').setDriver('text-input').default('Hiweb Shop');
 
   // Footer text
   section.config('footer-html').setLabel('Footer HTML').setDriver('textarea-input').default('Edit this text in theme settings');

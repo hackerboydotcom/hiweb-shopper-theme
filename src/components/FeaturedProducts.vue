@@ -5,51 +5,23 @@
         <div class="col-12 text-center">
 
           <!-- Preheading -->
-          <h6 class="heading-xxs mb-3 text-gray-400">
-            Our products
+          <h6 v-if="component.getConfigValue('featured-products__small-text')" class="heading-xxs mb-3 text-gray-400">
+            {{ component.getConfigValue('featured-products__small-text') }}
           </h6>
 
           <!-- Heading -->
-          <h2 class="mb-10">Get your Perfect Lenses</h2>
+          <h2 v-if="component.getConfigValue('featured-products__heading')" class="mb-10">{{ component.getConfigValue('featured-products__heading') }}</h2>
+
+          <div v-if="isLoading" class="text-center">
+            <loader />
+          </div>
 
           <!-- Slider -->
-          <div class="flickity-buttons-lg px-lg-12 mt-n3">
+          <div v-if="productsDocument" class="flickity-buttons-lg px-lg-12 mt-n3">
 
             <!-- Item -->
-            <div v-for="i in 6" class="col-12 col-md-4 pt-3 pb-7">
-              <div class="card card-lg shadow-hover">
-
-                <!-- Circle -->
-                <div class="card-circle card-circle-right">
-                  <strong class="font-size-xs">save</strong>
-                  <span class="h6 mb-0">30%</span>
-                </div>
-
-                <!-- Image -->
-                <img src="https://i.ytimg.com/vi/LRVsxe5OJVY/maxresdefault.jpg" alt="..." class="card-img-top">
-
-                <!-- Body -->
-                <div class="card-body mt-n6 text-center">
-
-                  <!-- Heading -->
-                  <p class="mb-3 font-weight-bold">
-                    Blue contact Lenses <br>
-                    <span class="font-size-xs text-gray-350 text-decoration-line-through">$40.00</span> <span class="text-primary">$28.00</span>
-                  </p>
-
-                  <!-- Text -->
-                  <p class="text-muted">
-                    Good male give subdue set one, image that his beginning.
-                  </p>
-
-                  <!-- Button -->
-                  <a href="#!" class="btn btn-sm btn-outline-primary">
-                    Add to Cart
-                  </a>
-
-                </div>
-
-              </div>
+            <div v-for="product in productsDocument.getData()" class="col-12 col-md-4 pt-3 pb-7">
+              <product-box :product="product" />
             </div>
 
           </div>
@@ -65,11 +37,74 @@ import Flickity from 'flickity';
 
 export default {
 
-  mounted() {
-    
-    let flky = new Flickity(this.$el.querySelector('.flickity-buttons-lg'), {
-      cellAlign: 'left'
-    });
+  props: ['component'],
+
+  data() {
+    return {
+      isLoading: false,
+      productsDocument: null
+    };
+  },
+
+  created() {
+    this.getProducts();
+  },
+
+  methods: {
+
+    /**
+    * Get products
+    */
+    async getProducts() {
+
+      this.isLoading = true;
+
+      try {
+
+        let options = {};
+
+        // If collection id set
+        if (this.collectionId) {
+          options.params = {
+            'filter[collection_id]': this.collectionId
+          };
+        }
+
+        this.productsDocument = await this.$http.collection('products', options);
+
+        // Init slider
+        setTimeout(() => {
+          let flky = new Flickity(this.$el.querySelector('.flickity-buttons-lg'), {
+            cellAlign: 'left'
+          });
+        }, 500);
+
+      } catch (e) {
+
+      }
+
+      this.isLoading = false;
+
+    }
+
+  },
+
+  computed: {
+
+    collectionId: function() {
+      let c = this.component.getConfigValue('featured-products__collection');
+      if (c && Array.isArray(c) && c[0]) {
+        return c[0];
+      }
+      return null;
+    }
+  },
+
+  watch: {
+
+    collectionId: function() {
+      this.getProducts();
+    }
 
   }
 }

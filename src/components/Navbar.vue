@@ -16,8 +16,8 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
 
         <!-- Nav -->
-        <ul class="navbar-nav mx-auto">
-          
+        <ul v-if="$themeConfig.getConfigValue('top-menu')" class="navbar-nav mx-auto">
+
           <li v-for="menuLink in $themeConfig.getConfigValue('top-menu')" class="nav-item dropdown">
 
             <!-- Toggle -->

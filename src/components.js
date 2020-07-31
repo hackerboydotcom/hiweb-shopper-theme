@@ -27,3 +27,7 @@ Vue.component('hero-image', HeroImage);
 // Featured products
 import FeaturedProducts from '@/components/FeaturedProducts';
 Vue.component('featured-products', FeaturedProducts);
+
+// Info block
+import InfoBlock from '@/components/InfoBlock';
+Vue.component('info-block', InfoBlock);
