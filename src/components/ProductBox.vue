@@ -10,24 +10,26 @@
       <!-- Image -->
       <div class="card-img">
 
-        <!-- Image -->
-        <router-link class="card-img-hover" :to="$linkTo('product', product)">
-          <img class="card-img-top card-img-back" :src="$image.url(product.getRelationshipData('image'))" alt="...">
-          <img class="card-img-top card-img-front" :src="$image.url(product.getRelationshipData('image'))" alt="...">
-        </router-link>
+        <div style="position: absolute; top: 0px; left: 0px; width: 100%">
+          <!-- Image -->
+          <router-link :class="(product.getRelationshipData('images') && product.getRelationshipData('images').length > 1) ? 'card-img-hover' : 'card-img'" :to="$linkTo('product', product)">
+            <img class="card-img-top card-img-back" :src="$image.url(product.getRelationshipData('image'))" alt="...">
+            <img v-if="product.getRelationshipData('images') && product.getRelationshipData('images').length > 1" class="card-img-top card-img-front" :src="$image.url(product.getRelationshipData('images')[1])" alt="...">
+          </router-link>
 
-        <!-- Actions -->
-        <div class="card-actions">
-          <span class="card-action">
-            <router-link :to="$linkTo('product', product)" class="btn btn-xs btn-circle btn-white-primary">
-              <i class="fe fe-eye"></i>
-            </router-link>
-          </span>
-          <span class="card-action">
-            <button @click="showModal" class="btn btn-xs btn-circle btn-white-primary">
-              <i class="fe fe-shopping-cart"></i>
-            </button>
-          </span>
+          <!-- Actions -->
+          <div v-if="quickView" class="card-actions">
+            <span class="card-action">
+              <router-link :to="$linkTo('product', product)" class="btn btn-xs btn-circle btn-white-primary">
+                <i class="fe fe-eye"></i>
+              </router-link>
+            </span>
+            <span class="card-action">
+              <button @click="showModal" class="btn btn-xs btn-circle btn-white-primary">
+                <i class="fe fe-shopping-cart"></i>
+              </button>
+            </span>
+          </div>
         </div>
 
       </div>
@@ -62,7 +64,7 @@
     </div>
 
     <!-- Quick view modal -->
-    <div class="modal fade" :id="id">
+    <div v-if="quickView" class="modal fade" :id="id">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           
@@ -110,7 +112,15 @@ import ProductDetail from '@/views/product/Detail';
 
 export default {
   
-  props: ['product'],
+  props: {
+    product: {
+      type: Object
+    },
+    quickView: {
+      type: Boolean,
+      default: true
+    }
+  },
 
   components: { ProductImages, ProductDetail },
 
@@ -221,6 +231,11 @@ export default {
 
 <style type="text/css" lang="scss">
 .product-box {
+
+  .card-img {
+    position: relative;
+    padding-top: 100%;
+  }
 
   .flickity-viewport {
     min-height: 300px !important;

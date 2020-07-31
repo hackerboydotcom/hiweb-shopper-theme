@@ -1,5 +1,5 @@
 <template>
-  <section class="pt-12 pb-10 featured-products">
+  <section class="pt-12 pb-0 featured-products">
     <div class="container">
       <div class="row">
         <div class="col-12 text-center">
@@ -21,7 +21,7 @@
 
             <!-- Item -->
             <div v-for="product in productsDocument.getData()" class="col-12 col-md-4 pt-3 pb-7">
-              <product-box :product="product" />
+              <product-box :product="product" :quick-view="false" />
             </div>
 
           </div>
@@ -73,11 +73,20 @@ export default {
         this.productsDocument = await this.$http.collection('products', options);
 
         // Init slider
-        setTimeout(() => {
-          let flky = new Flickity(this.$el.querySelector('.flickity-buttons-lg'), {
+        let waiting = setInterval(() => {
+
+          let dom = this.$el.querySelector('.flickity-buttons-lg');
+          if (!dom) {
+            return;
+          }
+
+          clearInterval(waiting);
+
+          let flky = new Flickity(dom, {
             cellAlign: 'left'
           });
-        }, 500);
+
+        }, 100);
 
       } catch (e) {
 
