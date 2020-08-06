@@ -2,6 +2,19 @@ import themeConfig from 'hiweb-theme-sdk/config';
 
 themeConfig.section('Product page', 'product', section => {
 
+  // Register block
+  section.block('product', 'Product block', block => {
+
+    // Register a component
+    block.register('recommended-products', 'Recommended Products ', component => {
+
+      // Heading text
+      component.config('recommended-products__heading').setLabel('Heading text').setDriver('text-input').default('You might also like');
+
+    });
+
+  });
+
   // Layout
   section.config('product-layout').setLabel('Layout').setDriver('select-input').setOptions({
     layout1: 'Layout 1',

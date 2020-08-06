@@ -46,6 +46,9 @@
 
     </template>
 
+    <!-- Product block -->
+    <hiweb-theme-block block="product" />
+
   </div>
 </template>
 

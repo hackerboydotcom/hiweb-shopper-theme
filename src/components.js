@@ -31,3 +31,7 @@ Vue.component('featured-products', FeaturedProducts);
 // Info block
 import InfoBlock from '@/components/InfoBlock';
 Vue.component('info-block', InfoBlock);
+
+// Recommended products
+import recommendedProducts from '@/components/recommendedProducts';
+Vue.component('recommended-products', recommendedProducts);
