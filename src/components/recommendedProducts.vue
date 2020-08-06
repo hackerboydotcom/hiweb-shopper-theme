@@ -9,77 +9,23 @@
             <h4 class="mb-10 text-center">
               {{component.getConfigValue('recommended-products__heading')}}
             </h4>
+            
+            <!-- Is loading -->
+            <div v-if="isLoading" class="mt-5 pt-5">
+              <div class="mt-5 pt-5"></div>
+              <loader />
+            </div>
 
-            <!-- Items -->
-            <div v-if="component.getConfigValue('recommended-products__products')" class="row">
-
-              <div v-for="product in component.getConfigValue('recommended-products__products')" class="col-6 col-sm-6 col-md-4 col-lg-3">
-
-                <!-- Card -->
-                <div class="card mb-7">
-
-                  <!-- Badge -->
-                  <div class="badge badge-white card-badge card-badge-left text-uppercase">
-                    New
-                  </div>
-
-                  <!-- Image -->
-                  <div class="card-img">
-
-                    <!-- Image -->
-                    <a class="card-img-hover" href="product.html">
-                      <img class="card-img-top card-img-back" :src="$image.url(product.image)" alt="...">
-                      <img class="card-img-top card-img-front" :src="$image.url(product.image)" alt="...">
-                    </a>
-
-                    <!-- Actions -->
-                    <div class="card-actions">
-                      <span class="card-action">
-                        <button class="btn btn-xs btn-circle btn-white-primary" data-toggle="modal" data-target="#modalProduct">
-                          <i class="fe fe-eye"></i>
-                        </button>
-                      </span>
-                      <span class="card-action">
-                        <button class="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                          <i class="fe fe-shopping-cart"></i>
-                        </button>
-                      </span>
-                      <span class="card-action">
-                        <button class="btn btn-xs btn-circle btn-white-primary" data-toggle="button">
-                          <i class="fe fe-heart"></i>
-                        </button>
-                      </span>
-                    </div>
-
-                  </div>
-
-                  <!-- Body -->
-                  <div class="card-body px-0">
-
-                    <!-- Category -->
-                    <div class="font-size-xs" v-if="product.collection">
-                      <router-link class="text-muted" :to="$linkTo('collection', product.collection)">
-                        {{ product.collection.title }}
-                      </router-link>
-                    </div>
-
-                    <!-- Title -->
-                    <div class="font-weight-bold">
-                      <router-link class="text-body" :to="$linkTo('product', product)">
-                        {{product.title}}
-                      </router-link>
-                    </div>
-
-                    <!-- Price -->
-                    <div class="font-weight-bold text-muted">
-                      ${{product.price}}
-                    </div>
-
-                  </div>
-
-                </div>
-
+            <!-- Products -->
+            <div v-if="products" class="row">
+              <div v-for="product in products" class="col-lg-3">
+                <product-box :key="product.getId()" :product="product" />
               </div>
+            </div>
+
+            <div v-else>
+                <!-- Errors -->
+                <error-hero :errors="errors" />
             </div>
 
           </div>
@@ -94,8 +40,59 @@ export default {
 
   props: ['component'],
 
+  data() {
+    return {
+      products: null,
+      errors: [],
+      isLoading: true,
+    }
+  },
+
   created() {
-    
+
+    let params = {
+        limit: 8,
+        page: 1,
+        'exclude_relationships[products]': 'variants',
+    };
+    if (this.component.getConfigValue('recommended-products__selector') == 'recentlyViewed') {
+        // params['filter[ids]'] = 
+        params['sort'] = '-created_at';
+    } else if (this.component.getConfigValue('recommended-products__selector') == "related") {
+        params['sort'] = '-created_at';
+        // params['filter[search]'] = '';
+    } else if (this.component.getConfigValue('recommended-products__selector') == "popular") {
+        params['sort'] = '-order_count';
+    }
+
+    this.getProducts(params);
+
+  },
+
+  methods: {
+
+    /**
+    * get products
+    * @param object
+    */
+    async getProducts(params) {
+
+      this.isLoading = true;
+
+      try {
+
+        let productsDocument = await this.$http.collection('products', { params });
+        this.products = productsDocument.getData();
+
+      } catch (error) {
+        
+        this.errors.push('Resource not found!')
+
+      }
+
+      this.isLoading = false;
+
+    }
   },
 }
 </script>
