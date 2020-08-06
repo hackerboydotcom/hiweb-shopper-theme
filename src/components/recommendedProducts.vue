@@ -62,7 +62,7 @@ export default {
         params['sort'] = '-created_at';
         // params['filter[search]'] = '';
     } else if (this.component.getConfigValue('recommended-products__selector') == "popular") {
-        params['sort'] = '-order_count';
+        // params['sort'] = '-order_count';
     }
 
     this.getProducts(params);
