@@ -83,8 +83,6 @@ export default {
       // Set the date we're counting down to
       let date = new Date(this.component.getConfigValue('countdown-block__date')).getTime();
 
-      console.log(this.component.getConfigValue('countdown-block__date'));
-
       // Update the count down every 1 second
       this.countdownBlock = setInterval(() => {
 
