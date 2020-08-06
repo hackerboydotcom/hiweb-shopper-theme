@@ -11,6 +11,11 @@ themeConfig.section('Product page', 'product', section => {
       // Heading text
       component.config('recommended-products__heading').setLabel('Heading text').setDriver('text-input').default('You might also like');
 
+      // Recommended products
+      component.config('recommended-products__products').setLabel('Recommended').setDriver('recommended-products-selector').default([
+
+      ]);
+
     });
 
   });
