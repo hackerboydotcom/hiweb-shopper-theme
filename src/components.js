@@ -31,3 +31,7 @@ Vue.component('featured-products', FeaturedProducts);
 // Info block
 import InfoBlock from '@/components/InfoBlock';
 Vue.component('info-block', InfoBlock);
+
+// Countdown Block
+import CountdownBlock from '@/components/CountdownBlock';
+Vue.component('countdown-block', CountdownBlock);
