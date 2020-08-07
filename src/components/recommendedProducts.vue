@@ -1,41 +1,35 @@
 <template>
-  <div class="recommended-products">
-    <section class="pt-11">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
+  <section class="pt-5 pb-0 featured-products">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
 
-            <!-- Heading -->
-            <h4 class="mb-10 text-center">
-              {{component.getConfigValue('recommended-products__heading')}}
-            </h4>
-            
-            <!-- Is loading -->
-            <div v-if="isLoading" class="mt-5 pt-5">
-              <div class="mt-5 pt-5"></div>
-              <loader />
-            </div>
+          <!-- Heading -->
+          <h2 v-if="component.getConfigValue('recommended-products__heading')" class="mb-10">{{ component.getConfigValue('recommended-products__heading') }}</h2>
 
-            <!-- Products -->
-            <div v-if="products" class="row">
-              <div v-for="product in products" class="col-lg-3">
-                <product-box :key="product.getId()" :product="product" />
-              </div>
-            </div>
+          <div v-if="isLoading" class="text-center">
+            <loader />
+          </div>
 
-            <div v-else>
-                <!-- Errors -->
-                <error-hero :errors="errors" />
+          <!-- Slider -->
+          <div v-if="products" class="flickity-buttons-lg px-lg-12 mt-n3">
+
+            <!-- Item -->
+            <div v-for="product in products" class="col-12 col-md-4 pt-3 pb-7">
+              <product-box :product="product" :quick-view="false" />
             </div>
 
           </div>
+
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script type="text/javascript">
+import Flickity from 'flickity';
+
 export default {
 
   props: ['component'],
@@ -50,22 +44,7 @@ export default {
 
   created() {
 
-    let params = {
-        limit: 8,
-        page: 1,
-        'exclude_relationships[products]': 'variants',
-    };
-    if (this.component.getConfigValue('recommended-products__selector') == 'recentlyViewed') {
-        // params['filter[ids]'] = 
-        params['sort'] = '-created_at';
-    } else if (this.component.getConfigValue('recommended-products__selector') == "related") {
-        params['sort'] = '-created_at';
-        // params['filter[search]'] = '';
-    } else if (this.component.getConfigValue('recommended-products__selector') == "popular") {
-        // params['sort'] = '-order_count';
-    }
-
-    this.getProducts(params);
+    this.getProducts();
 
   },
 
@@ -75,14 +54,45 @@ export default {
     * get products
     * @param object
     */
-    async getProducts(params) {
+    async getProducts() {
 
       this.isLoading = true;
+      
+      let params = {
+        limit: 8,
+        page: 1,
+        'exclude_relationships[products]': 'variants',
+      };
+      if (this.recommenedType == 'recentlyViewed') {
+          // params['filter[ids]'] = 
+          params['sort'] = '-created_at';
+      } else if (this.recommenedType == "related") {
+          params['sort'] = '-created_at';
+          // params['filter[search]'] = '';
+      } else if (this.recommenedType == "popular") {
+          // params['sort'] = '-order_count';
+      }
 
       try {
 
         let productsDocument = await this.$http.collection('products', { params });
         this.products = productsDocument.getData();
+
+        // Init slider
+        let waiting = setInterval(() => {
+
+          let dom = this.$el.querySelector('.flickity-buttons-lg');
+          if (!dom) {
+            return;
+          }
+
+          clearInterval(waiting);
+
+          let flky = new Flickity(dom, {
+            cellAlign: 'left'
+          });
+
+        }, 100);
 
       } catch (error) {
         
@@ -92,6 +102,18 @@ export default {
 
       this.isLoading = false;
 
+    }
+  },
+
+  computed: {
+    recommenedType: function() {
+      return this.component.getConfigValue('recommended-products__selector') || 'related';
+    }
+  },
+
+  watch: {
+    recommenedType: function() {
+      this.getProducts()
     }
   },
 }
