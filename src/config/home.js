@@ -87,7 +87,7 @@ themeConfig.section('Home page', 'home', section => {
       component.config('countdown-block__heading').setLabel('Heading text').setDriver('text-input').default('Example of heading text!');
 
       // Date
-      component.config('countdown-block__date').setLabel('Select date').setDriver('date-input');
+      component.config('countdown-block__date').setLabel('Select date').setDriver('datetime-input');
 
       // Button text
       component.config('countdown-block__button-text').setLabel('Button text').setDriver('text-input').default('Shop now');
