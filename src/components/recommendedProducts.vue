@@ -12,10 +12,10 @@
           </div>
           
           <!-- Slider -->
-          <div v-if="productsDocument" class="flickity-buttons-lg px-lg-12 mt-n3">
+          <div v-if="products" class="flickity-buttons-lg px-lg-12 mt-n3">
 
             <!-- Item -->
-            <div v-for="product in productsDocument.getData()" class="col-12 col-md-4 pt-3 pb-7">
+            <div v-for="product in products" class="col-12 col-md-4 pt-3 pb-7">
               <product-box :product="product" :quick-view="false" />
             </div>
 
@@ -32,20 +32,29 @@ import Flickity from 'flickity';
 
 export default {
 
-  props: ['component'],
+  props: ['component',],
 
   data() {
     return {
       products: null,
       productsDocument:null,
       errors: [],
+      productId:null,
       isLoading: true,
+      product: null,
     }
   },
 
   created() {
 
-    this.getProducts();
+    // Listen to an event
+    this.$event.$on('view-product', eventPayload => {
+
+      this.product = eventPayload.getData();
+      this.productId = product.data.id;
+      this.getProducts();
+      
+    })
 
   },
 
@@ -80,6 +89,8 @@ export default {
       try {
 
         this.productsDocument = await this.$http.collection('products', options);
+        this.products = this.productsDocument.getData();
+        this.products = this.products.filter((productData) => productData.data.id != this.productId);
 
         // Init slider
         let waiting = setInterval(() => {
@@ -109,9 +120,58 @@ export default {
   },
 
   computed: {
+
     recommenedType: function() {
       return this.component.getConfigValue('recommended-products__selector') || 'related';
-    }
+    },
+
+    searchString: function() {
+
+      let search = '';
+
+      // Tag
+      search = this.product.getAttribute('title');
+
+      // Collection
+      let collectionWords = [];
+      let collections = this.product.getRelationshipData('collections');
+      
+      if (collections) {
+
+          for (let i = 0; i < collections.length; i++) {
+
+              let collectionTitle = collections[i].attributes.title.toLowerCase();
+              collectionTitle = collectionTitle.replace(',', '');
+              collectionTitle = collectionTitle.split(' ');
+
+              for (let k = 0; k < collectionTitle.length; k++) {
+
+                  if (collectionWords.indexOf(collectionTitle[k]) === -1) {
+                      collectionWords.push(collectionTitle[k]);
+                  }
+
+              }
+
+          }
+
+      }
+
+      search = search.toLowerCase().split(' ');
+
+      for (let i = 0; i < search.length; i++) {
+
+          // Remove collection word
+          if (collectionWords.indexOf(search[i]) !== -1) {
+              search.splice(i, 1);
+              i--;
+          }
+
+      }
+
+      return search.join(' ');
+
+    },
+
   },
 
   watch: {
