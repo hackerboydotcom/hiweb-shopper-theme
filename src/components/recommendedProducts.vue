@@ -10,12 +10,12 @@
           <div v-if="isLoading" class="text-center">
             <loader />
           </div>
-
+          
           <!-- Slider -->
-          <div v-if="products" class="flickity-buttons-lg px-lg-12 mt-n3">
+          <div v-if="productsDocument" class="flickity-buttons-lg px-lg-12 mt-n3">
 
             <!-- Item -->
-            <div v-for="product in products" class="col-12 col-md-4 pt-3 pb-7">
+            <div v-for="product in productsDocument.getData()" class="col-12 col-md-4 pt-3 pb-7">
               <product-box :product="product" :quick-view="false" />
             </div>
 
@@ -37,6 +37,7 @@ export default {
   data() {
     return {
       products: null,
+      productsDocument:null,
       errors: [],
       isLoading: true,
     }
@@ -58,25 +59,27 @@ export default {
 
       this.isLoading = true;
       
-      let params = {
+      let options = {};
+
+      options.params = {
         limit: 8,
-        page: 1,
+        page: this.page,
         'exclude_relationships[products]': 'variants',
-      };
-      if (this.recommenedType == 'recentlyViewed') {
-          // params['filter[ids]'] = 
-          params['sort'] = '-created_at';
-      } else if (this.recommenedType == "related") {
-          params['sort'] = '-created_at';
-          // params['filter[search]'] = '';
-      } else if (this.recommenedType == "popular") {
-          // params['sort'] = '-order_count';
       }
 
+      if (this.recommenedType == 'recentlyViewed') {
+          // options.params['filter[ids]'] = 
+          options.sort = '-created_at';
+      } else if (this.recommenedType == "related") {
+          options.sort = '-created_at';
+          options.params['filter[search]'] = 'test-1';
+      } else if (this.recommenedType == "popular") {
+          options.sort = '-order_count';
+      }
+      
       try {
 
-        let productsDocument = await this.$http.collection('products', { params });
-        this.products = productsDocument.getData();
+        this.productsDocument = await this.$http.collection('products', options);
 
         // Init slider
         let waiting = setInterval(() => {
@@ -118,3 +121,4 @@ export default {
   },
 }
 </script>
+
