@@ -91,15 +91,17 @@ export default {
           
         // Find the distance between now and the count down date
         let distance = date - now;
-          
-        // Time calculations for days, hours, minutes and seconds
-        this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
-          
-        // If the count down is over, write some text 
-        if (distance < 0) {
+
+        if (distance > 0) {
+
+          // Time calculations for days, hours, minutes and seconds
+          this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        } else {
+          // If the count down is over
           clearInterval(this.countdownBlock);
         }
 
