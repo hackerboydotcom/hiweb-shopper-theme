@@ -74,6 +74,29 @@ themeConfig.section('Home page', 'home', section => {
 
     });
 
+    // Register countdown component
+    block.register('countdown-block', 'Countdown', component => {
+
+      // Background image
+      component.config('countdown-block__background-image').setLabel('Background image').setDriver('image-selector').setLimit(1).default([{
+        url: 'https://hiweb-test.s3-ap-southeast-1.amazonaws.com/',
+        path: 'themes/default-ecommerce-theme/assets/img/products/product-97.jpg'
+      }]);
+
+      // TItle
+      component.config('countdown-block__heading').setLabel('Heading text').setDriver('text-input').default('Example of heading text!');
+
+      // Date
+      component.config('countdown-block__date').setLabel('Select date').setDriver('date-input');
+
+      // Button text
+      component.config('countdown-block__button-text').setLabel('Button text').setDriver('text-input').default('Shop now');
+
+      // Button link
+      component.config('countdown-block__button-link').setLabel('Button link').setDriver('text-input').default('/collections');
+
+    });
+
     // Set default data
     block.setDefaultData([
       {
@@ -84,6 +107,9 @@ themeConfig.section('Home page', 'home', section => {
       },
       {
         component: 'featured-products'
+      },
+      {
+        component: 'countdown-block'
       },
     ]);
 
