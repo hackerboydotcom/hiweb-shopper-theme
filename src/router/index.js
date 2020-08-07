@@ -20,7 +20,10 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
-  base: '/'
+  base: '/',
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
 
 // Register routes through hiweb router
