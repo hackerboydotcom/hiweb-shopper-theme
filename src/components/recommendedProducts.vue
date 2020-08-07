@@ -21,6 +21,11 @@
 
           </div>
 
+          <div v-if="(!products || products.length == 0) && !isLoading">
+            <!-- Errors -->
+            <error-hero :errors="['Resource not found']" />
+          </div>
+
         </div>
       </div>
     </div>
@@ -51,7 +56,7 @@ export default {
     this.$event.$on('view-product', eventPayload => {
 
       this.product = eventPayload.getData();
-      this.productId = product.data.id;
+      this.productId = this.product.data.id;
       this.getProducts();
       
     })
@@ -81,7 +86,7 @@ export default {
           options.sort = '-created_at';
       } else if (this.recommenedType == "related") {
           options.sort = '-created_at';
-          options.params['filter[search]'] = 'test-1';
+          options.params['filter[search]'] = this.searchString;
       } else if (this.recommenedType == "popular") {
           options.sort = '-order_count';
       }
@@ -90,8 +95,8 @@ export default {
 
         this.productsDocument = await this.$http.collection('products', options);
         this.products = this.productsDocument.getData();
-        this.products = this.products.filter((productData) => productData.data.id != this.productId);
-
+        this.products = this.products.filter(productData => productData.data.id != this.productId);
+        
         // Init slider
         let waiting = setInterval(() => {
 
@@ -140,7 +145,7 @@ export default {
 
           for (let i = 0; i < collections.length; i++) {
 
-              let collectionTitle = collections[i].attributes.title.toLowerCase();
+              let collectionTitle = collections[i].data.attributes.title.toLowerCase();
               collectionTitle = collectionTitle.replace(',', '');
               collectionTitle = collectionTitle.split(' ');
 
@@ -167,7 +172,7 @@ export default {
           }
 
       }
-
+      
       return search.join(' ');
 
     },
