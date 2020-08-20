@@ -19,6 +19,12 @@
 
     <!-- Add to cart -->
     <div class="form-row mb-7">
+      <div class="col-12">
+        
+        <!-- Before add to cart block -->
+        <hiweb-theme-block block="product-before-add-to-cart" />
+
+      </div>
       <div class="col-12 col-lg-auto">
 
         <!-- Quantity -->

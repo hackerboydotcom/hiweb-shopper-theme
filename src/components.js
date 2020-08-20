@@ -35,3 +35,7 @@ Vue.component('info-block', InfoBlock);
 // Countdown Block
 import CountdownBlock from '@/components/CountdownBlock';
 Vue.component('countdown-block', CountdownBlock);
+
+// Custom html
+import CustomHtml from '@/components/CustomHtml';
+Vue.component('custom-html', CustomHtml);

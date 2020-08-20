@@ -21,4 +21,17 @@ themeConfig.section('Product page', 'product', section => {
     checkout: 'Redirect to checkout page'
   }).default('modal');
 
+  // Register a block
+  section.block('product-before-add-to-cart', 'Before add to cart', block => {
+
+    // Register a component
+    block.register('custom-html', 'Custom HTML', component => {
+
+      // Html code
+      component.config('custom-html__code').setLabel('HTML Code').setDriver('textarea-input');
+
+    });
+
+  });
+
 });

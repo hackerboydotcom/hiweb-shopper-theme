@@ -1,3 +1,3 @@
 module.exports = {
-  // publicPath: 'https://hiweb-test.s3.amazonaws.com/themes/default-ecommerce-theme/0.1.8/',
+  // publicPath: 'https://d183s36xgxd1rg.cloudfront.net/themes/default-ecommerce-theme/0.1.12/',
 }
