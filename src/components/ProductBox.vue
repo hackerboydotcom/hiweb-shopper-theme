@@ -8,7 +8,7 @@
       </div>
 
       <!-- Image -->
-      <div class="card-img">
+      <div class="card-img" style="overflow: hidden;">
 
         <div style="position: absolute; top: 0px; left: 0px; width: 100%">
           <!-- Image -->
